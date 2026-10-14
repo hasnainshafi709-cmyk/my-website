@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pizza 11 Eleven – Menu, Prices & Contact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --blue: #1a3fb8;
+    --blue-deep: #11297a;
+    --yellow: #ffc933;
+    --red: #e23b2a;
+    --paper: #fff9e8;
+    --ink: #14213d;
+    --ink-soft: #45507a;
+    --line: #c9cfe6;
+    --card: #ffffff;
+    --on-blue: #fff9e8;
+    --display: "Bowlby One", "Arial Black", Impact, sans-serif;
+    --body: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0d1533;
+      --ink: #fdf3d6;
+      --ink-soft: #b8c0e6;
+      --line: #2b3769;
+      --card: #141e45;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0d1533;
+    --ink: #fdf3d6;
+    --ink-soft: #b8c0e6;
+    --line: #2b3769;
+    --card: #141e45;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+  /* ---------- top bar ---------- */
+  .bar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+    background: var(--blue-deep); color: var(--on-blue);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 10px 20px;
+  }
+  .bar .name { font-family: var(--display); font-size: 18px; letter-spacing: .02em; text-decoration: none; }
+  .bar nav { display: flex; gap: 18px; font-weight: 500; font-size: 15px; }
+  .bar nav a { text-decoration: none; opacity: .9; }
+  .bar nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  @media (max-width: 520px) { .bar nav a.hide-sm { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    background: var(--blue);
+    color: var(--on-blue);
+    padding: 56px 20px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-inner { max-width: 1040px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: .92;
+    font-size: clamp(48px, 13vw, 132px);
+    text-transform: uppercase;
+    letter-spacing: -.01em;
+  }
+  .hero h1 .eleven {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--blue-deep);
+    padding: .02em .16em .06em;
+    border-radius: .14em;
+    transform: rotate(-3deg);
+    margin: 0 .06em;
+  }
+  .hero p.lead { max-width: 34ch; font-size: clamp(18px, 3.4vw, 24px); margin: 28px 0 28px; }
+  .modes { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
+  .modes li {
+    border: 2px solid var(--yellow); color: var(--yellow);
+    padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 15px;
+  }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 700;
+    padding: 14px 22px; border-radius: 12px; font-size: 17px; border: 2px solid transparent;
+  }
+  .btn-primary { background: var(--yellow); color: var(--blue-deep); }
+  .btn-primary:hover { background: #ffd966; }
+  .btn-ghost { border-color: var(--on-blue); color: var(--on-blue); }
+  .btn-ghost:hover { background: rgba(255,255,255,.12); }
+
+  /* pizza slice shapes in hero */
+  .pizza-art { position: absolute; right: -90px; top: 40px; width: min(52vw, 460px); opacity: .95; z-index: 0; }
+  @media (max-width: 760px) { .pizza-art { opacity: .22; right: -120px; top: 20px; width: 360px; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .pizza-art { animation: spin 90s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  }
+
+  /* ---------- menu ---------- */
+  main { max-width: 1040px; margin: 0 auto; padding: 64px 20px 24px; }
+  .section-head { margin: 0 0 8px; font-family: var(--display); font-weight: 400; font-size: clamp(32px, 6vw, 52px); line-height: 1; }
+  .section-sub { margin: 0 0 36px; color: var(--ink-soft); max-width: 52ch; }
+
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px 40px; }
+  .group { border-top: 4px solid var(--blue); padding-top: 14px; }
+  .group.wide { grid-column: 1 / -1; }
+  .group h3 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.1; color: var(--blue); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .group h3 { color: var(--yellow); } :root:not([data-theme="light"]) .group { border-top-color: var(--yellow); } }
+  :root[data-theme="dark"] .group h3 { color: var(--yellow); }
+  :root[data-theme="dark"] .group { border-top-color: var(--yellow); }
+  .group .note { margin: 0 0 12px; color: var(--ink-soft); font-size: 15px; }
+  .rows { list-style: none; margin: 8px 0 0; padding: 0; }
+  .rows li { display: flex; align-items: center; gap: 10px; padding: 9px 0; font-size: 18px; font-weight: 500; }
+  .rows li .dots { flex: 1; border-bottom: 2px dotted var(--line); transform: translateY(4px); min-width: 16px; }
+  .price {
+    background: var(--yellow); color: var(--blue-deep);
+    font-weight: 700; font-size: 18px; white-space: nowrap;
+    padding: 3px 12px 3px 16px;
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%);
+  }
+
+  /* flavours */
+  .flavours { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; list-style: none; margin: 14px 0 0; padding: 0; }
+  .flavours li {
+    background: var(--card); border: 2px solid var(--line);
+    border-left: 8px solid var(--red);
+    padding: 10px 14px; font-weight: 700; border-radius: 6px;
+  }
+
+  /* ---------- order ---------- */
+  .order { background: var(--blue-deep); color: var(--on-blue); margin-top: 56px; }
+  .order-inner { max-width: 1040px; margin: 0 auto; padding: 56px 20px; display: grid; gap: 36px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .order h2 { margin: 0 0 14px; font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5vw, 44px); line-height: 1; }
+  .order p { margin: 0 0 14px; }
+  .phones { display: grid; gap: 12px; }
+  .phones a {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    text-decoration: none; background: var(--yellow); color: var(--blue-deep);
+    font-weight: 700; font-size: 22px; padding: 14px 18px; border-radius: 12px;
+  }
+  .phones a small { font-size: 14px; font-weight: 500; }
+  .phones a:hover { background: #ffd966; }
+  address { font-style: normal; font-size: 19px; line-height: 1.5; }
+  .order .btn-ghost { margin-top: 8px; }
+
+  footer { background: var(--blue-deep); color: var(--on-blue); border-top: 1px solid rgba(255,255,255,.18); text-align: center; padding: 18px 20px 22px; font-size: 14px; opacity: .95; }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="name" href="#top">Pizza 11 Eleven</a>
+  <nav aria-label="Main">
+    <a href="#menu">Menu</a>
+    <a class="hide-sm" href="#flavours">Flavours</a>
+    <a href="#contact">Order</a>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <svg class="pizza-art" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="96" fill="#e9a23b"/>
+    <circle cx="100" cy="100" r="84" fill="#e23b2a"/>
+    <circle cx="100" cy="100" r="78" fill="#ffc933"/>
+    <g stroke="#e9a23b" stroke-width="2.5" opacity=".9">
+      <line x1="100" y1="22" x2="100" y2="178"/>
+      <line x1="22" y1="100" x2="178" y2="100"/>
+      <line x1="45" y1="45" x2="155" y2="155"/>
+      <line x1="155" y1="45" x2="45" y2="155"/>
+    </g>
+    <g fill="#c2271a">
+      <circle cx="70" cy="60" r="10"/><circle cx="140" cy="72" r="10"/><circle cx="62" cy="128" r="10"/>
+      <circle cx="132" cy="136" r="10"/><circle cx="100" cy="100" r="9"/><circle cx="100" cy="40" r="7"/>
+      <circle cx="160" cy="105" r="7"/><circle cx="104" cy="160" r="7"/><circle cx="40" cy="95" r="7"/>
+    </g>
+    <g fill="#2f8a3f">
+      <circle cx="85" cy="82" r="4"/><circle cx="118" cy="118" r="4"/><circle cx="80" cy="148" r="4"/>
+      <circle cx="146" cy="100" r="4"/><circle cx="54" cy="76" r="4"/><circle cx="120" cy="52" r="4"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <h1>Pizza <span class="eleven">11</span><br>Eleven</h1>
+    <p class="lead">Pizza, pasta, fries and injected nuggets, made fresh at Nazimabad.</p>
+    <ul class="modes" aria-label="Ways to order">
+      <li>Delivery</li>
+      <li>Takeaway</li>
+      <li>Dine-in</li>
+    </ul>
+    <div class="ctas">
+      <a class="btn btn-primary" href="tel:03190653711">Call 0319-0653711</a>
+      <a class="btn btn-ghost" href="#menu">See the menu</a>
+    </div>
+  </div>
+</section>
+
+<main id="menu">
+  <h2 class="section-head">Menu</h2>
+  <p class="section-sub">All prices are in Pakistani rupees (Rs).</p>
+
+  <div class="menu-grid">
+
+    <section class="group">
+      <h3>Pizza</h3>
+      <p class="note">Pick any flavour from the list below.</p>
+      <ul class="rows">
+        <li><span>Small</span><span class="dots"></span><span class="price">Rs 250</span></li>
+        <li><span>Regular</span><span class="dots"></span><span class="price">Rs 450</span></li>
+        <li><span>Large</span><span class="dots"></span><span class="price">Rs 700</span></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h3>Pizza Eleven Special</h3>
+      <ul class="rows">
+        <li><span>Small</span><span class="dots"></span><span class="price">Rs 350</span></li>
+        <li><span>Large</span><span class="dots"></span><span class="price">Rs 850</span></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h3>Seekh Kabab Pizza</h3>
+      <ul class="rows">
+        <li><span>Medium</span><span class="dots"></span><span class="price">Rs 750</span></li>
+        <li><span>Large</span><span class="dots"></span><span class="price">Rs 1,000</span></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h3>Creamy Pasta</h3>
+      <ul class="rows">
+        <li><span>Small</span><span class="dots"></span><span class="price">Rs 350</span></li>
+        <li><span>Large</span><span class="dots"></span><span class="price">Rs 600</span></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h3>Pizza Fries</h3>
+      <ul class="rows">
+        <li><span>Small</span><span class="dots"></span><span class="price">Rs 300</span></li>
+        <li><span>Large</span><span class="dots"></span><span class="price">Rs 550</span></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h3>Injected Nuggets</h3>
+      <p class="note">Served with sauce.</p>
+      <ul class="rows">
+        <li><span>6 pcs</span><span class="dots"></span><span class="price">Rs 400</span></li>
+        <li><span>12 pcs</span><span class="dots"></span><span class="price">Rs 800</span></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h3>Al Baik Injected Burger</h3>
+      <p class="note">With cheese.</p>
+      <ul class="rows">
+        <li><span>Burger</span><span class="dots"></span><span class="price">Rs 450</span></li>
+      </ul>
+    </section>
+
+    <section class="group wide" id="flavours">
+      <h3>Pizza flavours</h3>
+      <p class="note">Available on Small, Regular and Large pizzas.</p>
+      <ul class="flavours">
+        <li>Chicken Fajita</li>
+        <li>Chicken Tikka</li>
+        <li>Malai Boti</li>
+        <li>BBQ Tikka</li>
+        <li>Chicken Afghani</li>
+        <li>Bihari Tikka</li>
+        <li>Cheesy Lover</li>
+        <li>Vegie Lover</li>
+        <li>Creamy Supreme</li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<section class="order" id="contact">
+  <div class="order-inner">
+    <div>
+      <h2>Order now</h2>
+      <p>Call us for delivery or takeaway.</p>
+      <div class="phones">
+        <a href="tel:03190653711"><span>0319-0653711</span><small>Tap to call</small></a>
+        <a href="tel:03159941786"><span>0315-9941786</span><small>Tap to call</small></a>
+      </div>
+    </div>
+    <div>
+      <h2>Find us</h2>
+      <address>
+        Shop # 04, Falak Gold Residency<br>
+        Nazimabad No 1<br>
+        Near Al Hassan Chowk, Karachi
+      </address>
+      <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Falak+Gold+Residency+Nazimabad+No+1+Karachi" target="_blank" rel="noopener">Open in Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<footer>© Pizza 11 Eleven · Delivery · Takeaway · Dine-in</footer>
+
+</body>
+</html>
